@@ -28,7 +28,7 @@ def load_movies(session):
             else:
                 release_date = row[2].decode("latin-1")
                 release_date = datetime.strptime(release_date, '%d-%b-%Y')
-                
+
             name = row[1]
             name = name.decode("latin-1")
 
@@ -43,7 +43,7 @@ def load_ratings(session):
     # use u.data
 
     with open('seed_data/u.data') as d:
-        reader = csv.reader(d, delimiter="\t")
+        reader = csv.reader(d, delimiter="\t") 
         for row in reader:
             movie_id = row[1]
             movie_id = movie_id.decode("latin-1")
