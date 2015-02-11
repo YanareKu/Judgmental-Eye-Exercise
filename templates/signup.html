@@ -5,8 +5,17 @@
     <title></title>
 </head>
 <body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
     <div>
-    <form action="/confirmation" >
+    <form action="/confirmation" method="POST">
         <label>Email:<input type="email" name="email"></label>
         <br>
         <label>Password:<input type="password" name="password"></label>

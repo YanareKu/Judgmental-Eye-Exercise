@@ -23,8 +23,8 @@ class User(Base):
 
 
     def __repr__(self):
-        return "User id = %d, email = %s, password = %s, age = %d, zipcode = %s!" % (
-            self.id, self.email, self.password, self.age, self.zipcode)
+        return "User id = %d, email = %s, password = %s!" % (
+            self.id, self.email, self.password)
 
 class Movie(Base):
     __tablename__ = "movies"
@@ -59,7 +59,14 @@ class Rating(Base):
 def get_user_by_email(email_address):
     """returns a user by email address from database"""
     user = session.query(User).filter(User.email==email_address).first()
+
     return user
+
+def add_user_to_db(email, password, age=None, zipcode=None):
+    new_user = User(email=email, password=password, age=age, zipcode=zipcode)
+    session.add(new_user)
+    return session.commit()
+
 
 def main():
     """In case we need this for something"""
