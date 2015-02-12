@@ -6,7 +6,6 @@ app.secret_key = 'weeeeeeeeeeeeeeeeeeeeeesecreeeetssss!!!!'
 
 @app.route("/")
 def index():
-    user_list = model.session.query(model.User).limit(5).all()
     return render_template("index.html")
 
 @app.route("/login_route")
@@ -25,6 +24,8 @@ def verify_user():
         return redirect("/login_route")
     else:
         if user.password == password:
+            flask_session["user"]={"email":user.email,"id":user.id}
+            flash("Login successful!")
             return redirect("/movies")
         else:
             flash("Email or Password combination do not match our records.")
@@ -56,6 +57,17 @@ def confirm_signup():
 def display_movie_page():
     return render_template("movie_home.html")
 
+@app.route("/user_list")
+def display_user_list():
+    user_list = model.session.query(model.User).limit(20).all()
+    return render_template("user_list.html", users=user_list)
+
+@app.route("/user_rating/<int:id>")
+def show_rating(id):
+    """This page shows the ratings of the selected user."""
+    ratings_with_movies = model.get_movie_names_and_ratings_by_user_id(id)
+    print ratings_with_movies
+    return render_template("user_rating.html", ratings_with_movies=ratings_with_movies)
 
 if __name__ == "__main__":
     app.run(debug = True)

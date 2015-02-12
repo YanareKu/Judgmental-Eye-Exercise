@@ -3,6 +3,19 @@
     <title></title>
 </head>
 <body>
-<p> YAAAAAAAAAAAAAAAY MOVIEEES </p>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    <form action="/user_list" method="GET">
+        <label><button type="submit" name="user_list" value="user_list">User List</button></label>
+    </form>
+
+{{ session }}
 </body>
 </html>

@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+{% for rating, movie_title in ratings_with_movies %}
+<h2>For the movie "{{ movie_title }}", this user has rated it {{ rating }}<h2>
+{% endfor %}
+</body>
+</html>

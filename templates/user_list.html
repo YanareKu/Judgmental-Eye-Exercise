@@ -4,7 +4,7 @@
 </head>
 <body>
 {% for user in users %}
-<h2>User {{ user.id }}, age {{ user.age }} has {{ user.ratings|length }} ratings</h2>
+<h2><a href = "/user_rating/{{user.id}}">User {{ user.id }}, age {{ user.age }} has {{ user.ratings|length }} ratings</a></h2>
 {% endfor %}
 </body>
 </html>
