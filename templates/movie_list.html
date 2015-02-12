@@ -4,8 +4,20 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 </head>
 <body>
-{% for movie in movie_list %}
-<h4><a href = "/">Name: {{ movie.name }} Id: {{ movie.id }} URL: {{ movie.imdb_url }}</a></h4>
+<table>
+    <tr>
+        <td>Movie ID</td>
+        <td>Movie Title</td>
+        <td>Your rating</td>
+    </tr>
+{% for movie, rating in movie_list %}
+    <tr>
+        <td>Id: {{ movie.id }}</td>
+        <td><a href = "/rate_me/{{movie.id}}"> Name: {{ movie.name }} </a></td>
+        <td>{{rating}}</td>
+    </tr>
+
 {% endfor %}
+</table>
 </body>
 </html>

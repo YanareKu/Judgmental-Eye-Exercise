@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+</head>
+<body>
+<h2>Please Rate This Movie!</h2>
+<p>Title: {{movie.name}}</p>
+<p>Please select your rating from the Dropdown menu</p>
+    <form action="/add_rating/{{movie.id}}" method="POST">
+    <select name="rating">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+    <input type="submit" name="submit" value="submit">
+    </form>
+</body>

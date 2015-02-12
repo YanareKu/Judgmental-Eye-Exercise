@@ -1,8 +1,12 @@
-from flask import Flask, render_template, redirect, request, flash, session as flask_session
+from flask import Flask, render_template, redirect, request, flash, g, session as flask_session
 import model
 
 app = Flask(__name__)
 app.secret_key = 'weeeeeeeeeeeeeeeeeeeeeesecreeeetssss!!!!'
+
+@app.before_request
+def global_variables():
+    g.user_id = flask_session["user"]["id"]
 
 @app.route("/")
 def index():
@@ -78,8 +82,39 @@ def find_movie():
     title = request.args.get("search_box")
 
     movie_list=model.get_movie_rating_by_movie_name(title)
+    ## movie_list= list of movie objects
 
-    return render_template("/movie_list.html", movie_list=movie_list)
+    movie_rating_list=[]
+    for movie in movie_list:
+        rating = model.get_users_rating(movie.id, g.user_id)
+        movie_rating_list.append((movie, rating))
+
+    return render_template("/movie_list.html", movie_list=movie_rating_list)
+
+@app.route("/rate_me/<int:id>")
+def create_ratings(id):
+    movie_id = id
+    movie = model.get_movie_name_by_movie_id(movie_id)
+    return render_template("rate_me.html", movie=movie)
+
+@app.route("/add_rating/<int:id>", methods = ["POST"])
+def add_rating(id):
+    rating = request.form.get("rating")
+    user_id = g.user_id
+    movie_id = id
+    movie_object= model.get_movie_name_by_movie_id(movie_id)
+    movie_name = movie_object.name
+    print model.get_users_rating(movie_id, user_id), "********************"
+    if model.get_users_rating(movie_id, user_id) == "Not rated":
+        model.insert_rating(user_id, movie_id, rating)
+        flash("The rank %s has been added to the movie %s!" % (rating, movie_name)) 
+        return redirect("/movies")
+    else:
+        model.update_existing_rating(user_id, movie_id, rating)
+        flash("The rank for movie %s has been updated to %s!" % (movie_name, rating))         
+        return redirect("/movies")
+
+
 
 if __name__ == "__main__":
     app.run(debug = True)

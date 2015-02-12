@@ -2,6 +2,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import sessionmaker, relationship, backref, scoped_session
+import correlation
 
 ENGINE = create_engine("sqlite:///ratings.db", echo=True)
 session = scoped_session(sessionmaker(bind=ENGINE, 
@@ -52,9 +53,9 @@ class Rating(Base):
     user = relationship("User",
             backref=backref("ratings", order_by=id))
 
-    def __repr__(self):
-        return "Rating id = %d, movie id = %d, user id = %d, rating = %d" % (
-        self.id, self.movie_id, self.user_id, self.rating)
+    # def __repr__(self):
+    #     return "Rating id = %d, movie id = %d, user id = %d, rating = %d" % (
+    #     self.id, self.movie_id, self.user_id, self.rating)
 
 def get_user_by_email(email_address):
     """returns a user by email address from database"""
@@ -73,8 +74,31 @@ def get_movie_names_and_ratings_by_user_id(id):
 
 def get_movie_rating_by_movie_name(name):
     movie_names = session.query(Movie).filter(Movie.name.like('%'+name+'%')).all()
-
     return movie_names
+
+def get_users_rating(movie_id, user_id):
+    user_rating= session.query(Rating).filter(Rating.user_id==user_id, Rating.movie_id == movie_id).first()
+
+    if user_rating== None:
+        return "Not rated"
+    else:
+        return user_rating.rating
+
+
+def get_movie_name_by_movie_id(id):
+    movie = session.query(Movie).filter(Movie.id==id).first()
+    return movie
+
+def insert_rating(user_id, movie_id, rating):
+    update_rating = Rating(user_id= user_id, movie_id=movie_id, rating=rating)
+    session.add(update_rating)
+    return session.commit()
+
+def update_existing_rating(user_id, movie_id, rating):
+    user_rating_record = session.query(Rating).filter(Rating.user_id==user_id, Rating.movie_id == movie_id).first()
+    user_rating_record.rating = rating
+    return session.commit()
+
 
 def main():
     """In case we need this for something"""
