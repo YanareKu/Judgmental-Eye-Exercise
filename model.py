@@ -68,8 +68,13 @@ def add_user_to_db(email, password, age=None, zipcode=None):
     return session.commit()
 
 def get_movie_names_and_ratings_by_user_id(id):
-    all_ratings = session.query(Rating.rating, Movie.name,).join(Movie).filter(Rating.user_id==id).all()
+    all_ratings = session.query(Rating, Movie).outerjoin(Movie).filter(Rating.user_id==id).all()
     return all_ratings
+
+def get_movie_rating_by_movie_name(name):
+    movie_names = session.query(Movie).filter(Movie.name.like('%'+name+'%')).all()
+
+    return movie_names
 
 def main():
     """In case we need this for something"""

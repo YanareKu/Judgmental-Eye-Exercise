@@ -4,8 +4,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 </head>
 <body>
-{% for ratings, movie in ratings_with_movies %}
-<h2>For the movie "{{ movie.name }}", this user has rated it {{ ratings.rating }} stars.<h2>
+{% for movie in movie_list %}
+<h4><a href = "/">Name: {{ movie.name }} Id: {{ movie.id }} URL: {{ movie.imdb_url }}</a></h4>
 {% endfor %}
 </body>
 </html>

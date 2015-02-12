@@ -10,7 +10,10 @@ def index():
 
 @app.route("/login_route")
 def login_page():
-    return render_template("login.html")
+    if "user" in flask_session:
+        return redirect("/movies")
+    else:
+        return render_template("login.html")
 
 @app.route("/verify_user", methods=["POST"])
 def verify_user():
@@ -68,6 +71,15 @@ def show_rating(id):
     ratings_with_movies = model.get_movie_names_and_ratings_by_user_id(id)
     print ratings_with_movies
     return render_template("user_rating.html", ratings_with_movies=ratings_with_movies)
+
+@app.route("/search_list")
+def find_movie():
+
+    title = request.args.get("search_box")
+
+    movie_list=model.get_movie_rating_by_movie_name(title)
+
+    return render_template("/movie_list.html", movie_list=movie_list)
 
 if __name__ == "__main__":
     app.run(debug = True)

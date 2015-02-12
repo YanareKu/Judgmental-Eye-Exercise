@@ -1,5 +1,6 @@
 <html>
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <title></title>
 </head>
 <body>
@@ -15,6 +16,8 @@
     <form action="/user_list" method="GET">
         <label><button type="submit" name="user_list" value="user_list">User List</button></label>
     </form>
+    <form action="/search_list" method="GET">
+            <label>Search<input type="text" name="search_box" value="Insert Movie Title Here!"></label>
 
 {{ session }}
 </body>
